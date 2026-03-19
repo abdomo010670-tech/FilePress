@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>FilePress - ضاغط الملفات الشامل</title>
+    <meta name="description" content="ضغط الصور والفيديو و PDF بدون إنترنت">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>FilePress <span class="badge">v2.1</span></h1>
+            <p>ضغط ذكي للصور، الفيديو، و PDF</p>
+        </header>
+
+        <!-- منطقة السحب والإفلات -->
+        <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-content">
+                <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                <p>اسحب وأفلت الملفات هنا أو <span class="browse-text">اختر ملفات</span></p>
+                <p class="small-hint">يدعم: JPG, PNG, WEBP, MP4, WEBM, PDF</p>
+            </div>
+            <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png,.webp,.mp4,.webm,.pdf" hidden>
+        </div>
+
+        <!-- شريط التبويبات والإجراءات السريعة -->
+        <div class="settings-bar">
+            <div class="tabs">
+                <button class="tab-btn active" data-filter="all">الكل</button>
+                <button class="tab-btn" data-filter="image">الصور</button>
+                <button class="tab-btn" data-filter="video">الفيديو</button>
+                <button class="tab-btn" data-filter="pdf">PDF</button>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" id="compressAllBtn">ضغط تلقائي</button>
+                <button class="btn btn-outline" id="advancedSettingsBtn">إعدادات متقدمة</button>
+            </div>
+        </div>
+
+        <!-- لوحة الإعدادات المتقدمة -->
+        <div class="advanced-panel hidden" id="advancedPanel">
+            <h3>إعدادات الضغط</h3>
+            <div class="quality-section">
+                <label>جودة الصور:</label>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-quality="low">منخفضة</button>
+                    <button class="preset-btn active" data-quality="medium">متوسطة</button>
+                    <button class="preset-btn" data-quality="high">عالية</button>
+                </div>
+                <div class="range-input">
+                    <input type="range" id="qualityRange" min="0.1" max="1" step="0.01" value="0.8">
+                    <span id="qualityValue">80%</span>
+                </div>
+            </div>
+            <div class="resize-section">
+                <label>
+                    <input type="checkbox" id="resizeCheckbox"> تصغير الأبعاد (العرض ≤ 1200px)
+                </label>
+            </div>
+            <div class="pdf-section">
+                <label>ضغط PDF: </label>
+                <span class="pdf-note">تجريبي (إزالة البيانات الوصفية)</span>
+            </div>
+        </div>
+
+        <!-- قائمة الملفات -->
+        <div class="files-list" id="filesList">
+            <!-- تُملأ بواسطة JavaScript -->
+        </div>
+
+        <!-- شريط التقدم العام -->
+        <div class="global-progress-bar hidden" id="globalProgressBar">
+            <div class="progress-fill" id="globalProgressFill"></div>
+        </div>
+
+        <!-- زر تحميل الكل -->
+        <div class="global-actions">
+            <button class="btn btn-success" id="downloadAllBtn" disabled>تحميل الكل مضغوط (ZIP)</button>
+        </div>
+    </div>
+
+    <!-- حاوية الإشعارات -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- المكتبات المحلية -->
+    <script src="libs/jszip.min.js"></script>
+    <script src="libs/pdf-lib.min.js"></script>
+    <!-- تحميل FFmpeg محليًا (تأكد من وجود الملفات في libs/ffmpeg/) -->
+    <script src="libs/ffmpeg/ffmpeg.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
